@@ -1,0 +1,78 @@
+"Start Symbol" = <program>
+               
+
+!-----------Terminal--------
+Id =[_]|{letter}[{alphanumeric}|_]*
+Digit = ('+'|'-')? {digit}+('.'{digit}+)? (('e'|('-'|'+')?{digit}+)'^'('+'|'-'){digit}+('.'{digit}+)?)?     
+!---------- Rules-----------
+<program> ::= Start <stmt_lst> End        
+<stmt_lst> ::= <stmt>
+            |<stmt><stmt_lst>
+            
+<stmt> ::= <assign>
+        |<if_stmt>
+        |<switch_stmt>  
+        |<for_stmt>
+        |<do_while>
+        
+        
+!------assign---------
+
+<assign> ::= <id> '=' <expr> | <id> '=' <array>
+          
+<id> ::= Id
+      
+<expr>  ::= <Term> 
+        | <expr> '+' <Term> 
+        | <expr> '-' <Term>
+
+<Term> ::= <Factor> 
+         | <Term> '*' <Factor> 
+         | <Term> '/' <Factor>
+
+<Factor> ::= <digit> 
+           | <id> 
+           | '(' <expr> ')'
+
+<digit> ::= Digit 
+         
+<array>::='['<digit>']'
+        | '['<digit> ',' <digit_list> ']'  
+        
+<digit_list>::= <digit> | <digit> ',' <digit_list>  
+               
+!-------if_stmt-------------
+
+<if_stmt> ::= if <cond> start_if <stmt_lst> end_if
+                      |if <cond> start_if <stmt_lst>  else <stmt_lst> end_if
+           
+<cond> ::= <expr><op><expr>
+        
+<op> ::= '<'|'>'|'=='|'~='|'>='|'<='
+      
+!-------- switch--------------
+<switch_stmt> ::= switch <id>  start_switch <case_lst> end_switch
+               
+<case_lst> ::= <case>
+            |<case><case_lst>
+
+<case> ::= case <digit> ':' <stmt_lst>
+        
+!--------while_stmt------------
+!<while_stmt> ::= while <cond> '{'<stmt_lst>'}'
+              
+<do_while> ::= do <stmt_lst> while 'start_while'<cond> 'end_while'
+!----------for_stmt-----------
+
+<for_stmt> ::= for '['<assign>',' <cond>',' <step>']' ':'<stmt_lst> end_for
+            
+        
+<step> ::= <id>'++'
+        |'++'<id>
+        |<id>'--'
+        |'--'<id>
+        |<assign>
+               
+
+        
+
